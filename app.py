@@ -8,6 +8,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 
 db = SQLAlchemy(app)
 
+
 # create a model
 class Schedule(db.Model):
     id = db.Column(db.Integer, primary_key=True)
