@@ -1,7 +1,14 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy   import SQLAlchemy
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+from flask import flash, get_flashed_messages
+
+load_dotenv()  # Optional in dev; not needed if env vars are set in prod
+
 app = Flask(__name__)
+app.secret_key = os.getenv('SECRET_KEY')
 
 #DB connection
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -27,6 +34,8 @@ def index():
             db.session.commit()
             # after form submission print this
             #return "Form Submitted"
+            flash('Data updated successfully!', "success")
+
             return redirect('/')                #return back to index page
         except:
             return "Error commiting to database"
@@ -43,6 +52,7 @@ def delete(id):
     try:
         db.session.delete(schedule_to_delete)
         db.session.commit()
+        flash("You are about to delete a schedule!" , "warning")
         return redirect('/')
     except:
         return 'There was a problem deleting that task.'
